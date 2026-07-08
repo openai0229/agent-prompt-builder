@@ -1,6 +1,6 @@
 ---
 name: agent-prompt-builder
-description: "Interactively build and repair prompts for autonomous agent systems using a five-part runtime contract: Context, Request, Output Format, Constraints, and Checkpoint. Use when creating or improving Codex/Claude/Fable-style agent prompts, system prompts, skill prompts, multi-agent task briefs, prompt autopsies after failed agent runs, or reusable agent-behavior patterns. Especially relevant when the user is not a prompt/agent expert and needs the agent to ask high-quality questions, surface hidden boundaries, define permissions, verification, tool/memory limits, autonomy level, and stop conditions."
+description: "Interactively build and repair prompts for autonomous agent systems using agent anatomy plus a five-part runtime contract: Context, Request, Output Format, Constraints, and Checkpoint. Use when creating or improving Codex/Claude/Fable-style agent prompts, system prompts, skill prompts, multi-agent task briefs, prompt autopsies after failed agent runs, reusable agent-behavior patterns, or when the user/model does not understand what an agent is made of. Especially relevant when the user is not a prompt/agent expert and needs the agent to ask high-quality questions, surface hidden boundaries, define permissions, verification, tool/memory limits, autonomy level, runtime loop, handoff, and stop conditions."
 ---
 
 # Agent Prompt Builder
@@ -8,6 +8,8 @@ description: "Interactively build and repair prompts for autonomous agent system
 ## Purpose
 
 Use this skill to turn rough intent into an agent-ready runtime contract. Treat a prompt as operational instructions for an autonomous worker, not as persuasive prose.
+
+Assume the model may not understand agent anatomy. Do not let it treat an agent as "a prompt with personality." Force it to identify the actual runtime parts: model, instructions, inputs, context, state, tools, memory, authority, control loop, verification, observability, handoff, and recovery.
 
 Assume the user is not an agent-design expert and may also be only partially familiar with the business process. They may know a symptom or desired outcome without knowing the real workflow, stakeholders, data ownership, exceptions, approvals, or downstream consequences. Guide them by asking sharp questions, inspecting available artifacts when possible, explaining the consequence of each decision, and offering safe defaults.
 
@@ -27,7 +29,9 @@ Checkpoint: when to stop, ask, repair, or continue autonomously
 
 Default to interactive construction for agent-system prompts. Do not expect the user to volunteer complete requirements or know the right vocabulary.
 
-If business understanding is weak, do not jump straight to prompt writing. First build a lightweight business map:
+For agent-system prompts, first build an anatomy map before business discovery and few-shot calibration. A prompt cannot grant a capability unless the agent has a real component that can perform it.
+
+If business understanding is weak, do not jump straight from anatomy to prompt writing. Build a lightweight business map:
 
 ```text
 Actors: who is involved or affected
@@ -65,6 +69,7 @@ What should the agent refuse to clean up, simplify, rename, overwrite, or rememb
 
 Choose one mode:
 
+- **Agent anatomy**: discover the agent's runtime parts, missing organs, action surfaces, state, memory, tool fuses, verification, and handoff before writing prompt prose.
 - **Business discovery**: discover workflow, stakeholders, rules, data, exceptions, and evidence before writing the agent prompt.
 - **Few-shot calibration**: collect, generate, validate, and compress examples that teach the agent desired, forbidden, borderline, and escalation behavior.
 - **Guided interview**: build the prompt through staged questions for a novice user.
@@ -77,6 +82,54 @@ Choose one mode:
 - **Patternize**: extract a reusable prompt rule from a successful or failed task.
 
 For open-ended agent architecture, tool-routing, multi-agent design, or high-stakes system-prompt decisions, first use a divergent pass like `$adhd`: generate multiple prompt-contract designs under different frames, then converge. For ordinary prompt cleanup, do the direct workflow below.
+
+### 1.4. Build agent anatomy
+
+Use `references/agent-anatomy.md` before drafting any new autonomous agent prompt, multi-agent prompt, tool-using workflow, memory-enabled workflow, or production-adjacent automation. Also use it when the prompt says "agent", "autonomous", "tool", "memory", "handoff", "run", "execute", "monitor", "decide", "approve", "notify", "fix", "deploy", "refund", "close", or "learn".
+
+Build an anatomy map:
+
+```text
+Identity: name, role, owner, user, environment
+Goal: outcome, success signal, non-goals
+Inputs/sensors: user text, files, APIs, logs, screenshots, memory, events
+State: scratchpad, durable memory, local files, external records, emitted obligations
+Tools/actuators: what it can read, write, execute, publish, or delegate
+Authority: highest autonomous action rung and approver for higher rungs
+Control loop: observe -> decide -> act -> verify -> record -> recover
+Verification: tests, evidence, evaluator, parser, reviewer, rubric
+Observability: logs, receipts, trace, handoff packet
+Stop/recovery: kill switch, rollback, retry, degrade, ask, escalate
+```
+
+Translate for beginners:
+
+```text
+Eyes: what can the agent see?
+Pockets: what can it carry or remember?
+Hands: what can it change?
+Mouth: who can it speak to?
+Boss: who approves risky actions?
+Judge: who decides success?
+Brake: what makes it stop?
+```
+
+Reject pretend capabilities. If the prompt asks for live status, memory, approval, customer notification, production mutation, or subagent coordination but no real component supports it, downgrade the agent to observe/propose/draft mode and list the missing component as a dependency.
+
+For every action verb, write a capability-to-liability line:
+
+```text
+Action:
+Input evidence:
+State changed:
+External party affected:
+Approval required:
+Verification required:
+Failure mode:
+Recovery path:
+```
+
+Do not proceed to final prompt prose until every major anatomy item maps to Context, Request, Output Format, Constraints, or Checkpoint, or is explicitly out of scope.
 
 ### 1.5. Run the interview loop
 
@@ -113,15 +166,16 @@ I need these answers before the prompt can be reliable:
 
 Progress through these rounds:
 
-0. **Business map round**: actors, objects, workflow, business rules, exceptions, evidence, authority.
-1. **Few-shot round**: positive examples, negative examples, boundary examples, escalation examples, and expected outputs.
-2. **Outcome round**: goal, user, success signal, output consumer.
-3. **Evidence round**: what facts the agent may trust, inspect, infer, ignore, cite, or let override the user's first description.
-4. **Authority round**: who can authorize, override, revoke, and audit each class of action.
-5. **Permission ladder round**: observe, propose, edit, execute, publish; define which rung is autonomous and which requires approval.
-6. **Boundary round**: adjacent systems, people, data, environments, cost/time limits, legal/compliance limits, and deliberate non-goals.
-7. **Failure round**: worst accidents, over-help, rollback, uncertainty, conflicts, refusal, retries, handoff.
-8. **Verification round**: downstream judge, tests, evidence, citations, logs, review workflow, done criteria.
+0. **Agent anatomy round**: identity, inputs, state, tools, authority, control loop, verification, observability, recovery.
+1. **Business map round**: actors, objects, workflow, business rules, exceptions, evidence, authority.
+2. **Few-shot round**: positive examples, negative examples, boundary examples, escalation examples, and expected outputs.
+3. **Outcome round**: goal, user, success signal, output consumer.
+4. **Evidence round**: what facts the agent may trust, inspect, infer, ignore, cite, or let override the user's first description.
+5. **Authority round**: who can authorize, override, revoke, and audit each class of action.
+6. **Permission ladder round**: observe, propose, edit, execute, publish; define which rung is autonomous and which requires approval.
+7. **Boundary round**: adjacent systems, people, data, environments, cost/time limits, legal/compliance limits, and deliberate non-goals.
+8. **Failure round**: worst accidents, over-help, rollback, uncertainty, conflicts, refusal, retries, handoff.
+9. **Verification round**: downstream judge, tests, evidence, citations, logs, review workflow, done criteria.
 
 After each round, summarize the clauses learned so far. If the user gives a narrow answer, widen it with one boundary probe:
 
@@ -204,6 +258,9 @@ Continue autonomously unless the work involves an irreversible action, a scope c
 
 Before finalizing, check the prompt against these failure smells:
 
+- **Anatomy mismatch**: the prompt assumes a tool, live state, memory, approver, evaluator, identity, channel, or execution power that does not exist.
+- **Pretend organ**: the prompt uses vague agent magic like "understand context", "coordinate everything", "learn", "approve", or "monitor" without a concrete component and owner.
+- **Loop gap**: the prompt names a goal but not how the agent observes, decides, acts, verifies, records, and recovers.
 - **Missing authority**: unclear who authorized a decision, tool use, memory use, or mutation.
 - **Untestable verbs**: "make it better", "professional", "robust", "smart" without acceptance criteria.
 - **Constraint collision**: two reasonable instructions cannot both be satisfied.
@@ -274,6 +331,15 @@ For business discovery mode, output:
 4. A warning that no autonomous execution should be granted until the map is validated.
 5. A fact ledger for any business facts already used.
 
+For agent anatomy mode, output:
+
+1. The agent bill of materials.
+2. Missing, assumed, or fake components.
+3. Capability-to-liability ledger for action verbs.
+4. Tool pinout, state/memory policy, and authority ladder.
+5. Runtime loop and checkpoint triggers.
+6. Which anatomy items map to Context, Request, Output Format, Constraints, and Checkpoint.
+
 For few-shot calibration mode, output:
 
 1. The candidate example set grouped by positive, negative, boundary, counterexample, and recovery.
@@ -327,6 +393,7 @@ Checkpoint:
 
 ## References
 
+- Read `references/agent-anatomy.md` before drafting autonomous agent prompts, tool-using agents, memory-enabled agents, multi-agent workflows, production-adjacent automations, or when the user/model does not understand what an agent is made of.
 - Read `references/few-shot-guide.md` before building or teaching few-shot examples, especially when the user says they do not know how to write examples.
 - Read `references/checklist.md` when auditing a prompt or diagnosing a failed agent run.
 - Read `references/examples.md` when the user asks for examples or when drafting a new agent prompt from a rough request.

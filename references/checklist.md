@@ -10,6 +10,7 @@ Default to asking staged, high-quality questions when building a new autonomous 
 
 Good questions target:
 
+- agent anatomy: inputs, state, tools, memory, runtime loop, authority, verification, handoff, recovery
 - source of truth
 - authority to act
 - tool, memory, browsing, filesystem, or production permissions
@@ -57,8 +58,60 @@ Default if unanswered:
 - If the user wants no questions, produce a draft with explicit assumptions and a risk note.
 - If the user cannot answer, offer safe options instead of stalling.
 - If the user says "I do not know", choose draft-only/read-only defaults and mark the gap.
+- If the user or model treats the agent as magic, translate it into eyes, pockets, hands, mouth, boss, judge, clock, and brake.
 - If the user does not understand the business process, switch to artifact-driven discovery.
 - If no business artifacts exist, keep the agent in observe/propose mode only.
+
+## Agent Anatomy Gate
+
+Before writing or accepting an autonomous agent prompt, fill this map:
+
+```text
+Identity:
+Goal:
+Inputs/sensors:
+Context window:
+State:
+Memory:
+Tools/actuators:
+Authority:
+Control loop:
+Verification:
+Observability:
+Handoff:
+Stop/recovery:
+```
+
+Reject or downgrade the prompt if it assumes missing components:
+
+- live state without a live source
+- memory without read/write policy, owner, TTL, and invalidation
+- approval without approver, policy, or audit path
+- customer notification without channel, template, review, and send authority
+- production mutation without rollback, evidence, and verification
+- subagents without ownership, context limits, output schema, and merge protocol
+
+For every action verb, check:
+
+```text
+Action:
+Input evidence:
+State changed:
+External party affected:
+Approval required:
+Verification required:
+Failure mode:
+Recovery path:
+```
+
+Run the organ removal drill:
+
+- If tools are unavailable, what changes?
+- If memory is unavailable, what changes?
+- If live state is unavailable, what changes?
+- If user approval is delayed, what changes?
+- If verification fails, what changes?
+- If handoff is required, what state is passed forward?
 
 ## Business Discovery Map
 

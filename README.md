@@ -2,6 +2,8 @@
 
 `agent-prompt-builder` is a Codex skill for building reliable prompts for autonomous agent systems. It treats an agent prompt as a runtime contract, not as a loose instruction blob.
 
+It also forces agent anatomy before prompt drafting. An agent is not just a prompt: it is a model plus instructions, inputs, context, state, tools, memory, authority, control loop, verification, observability, handoff, and recovery.
+
 The skill guides the user through five required sections:
 
 - `Context`: business background, actors, objects, state, source of truth, and why the work matters
@@ -16,9 +18,11 @@ Most users do not know how to write agent prompts. They often describe only the 
 
 This skill forces the missing parts into the conversation:
 
+- agent anatomy before prompt writing
 - business discovery before prompt writing
 - high-quality questions at every stage
 - permission ladder for autonomous actions
+- runtime loop, state, memory, tool, and handoff boundaries
 - evidence and source-of-truth mapping
 - boundary, refusal, escalation, and recovery behavior
 - few-shot examples that teach judgment without granting unsafe authority
@@ -34,14 +38,16 @@ This skill makes the prompt auditable. Every behavior should trace back to a cla
 
 Start with the main flow in `SKILL.md`:
 
-1. Build the business map: actors, objects, workflow, rules, exceptions, evidence, authority.
-2. Build the few-shot calibration set: positive, negative, boundary, counterexample, and recovery cases.
-3. Draft the five-part prompt contract.
-4. Run the checklist and repair weak assumptions.
-5. Produce a final prompt plus a receipt explaining what changed and what still needs validation.
+1. Build the agent anatomy map: identity, inputs, state, memory, tools, authority, runtime loop, verification, observability, handoff, recovery.
+2. Build the business map: actors, objects, workflow, rules, exceptions, evidence, authority.
+3. Build the few-shot calibration set: positive, negative, boundary, counterexample, and recovery cases.
+4. Draft the five-part prompt contract.
+5. Run the checklist and repair weak assumptions.
+6. Produce a final prompt plus a receipt explaining what changed and what still needs validation.
 
 Use the references when needed:
 
+- `references/agent-anatomy.md`: how to reason about what an agent is made of before writing the prompt
 - `references/question-bank.md`: question packs for beginner users and unclear business domains
 - `references/few-shot-guide.md`: how to teach users to build useful few-shot examples
 - `references/checklist.md`: audit checklist for finished or failed prompts
@@ -91,6 +97,7 @@ The user is not sure which refund cases are safe to approve automatically.
 
 Expected skill behavior:
 
+- ask what the agent can see, remember, change, verify, and escalate
 - ask who can approve refunds and what systems are source of truth
 - separate draft-only replies from irreversible refund actions
 - ask for normal, refused, borderline, and recovery examples
@@ -120,6 +127,9 @@ Checkpoint:
 
 The few-shot guidance was informed by current public prompting guidance and few-shot research:
 
+- OpenAI Agents SDK agents guide: https://openai.github.io/openai-agents-python/agents/
+- OpenAI Agents SDK running agents: https://openai.github.io/openai-agents-python/running_agents/
+- Anthropic, Building effective agents: https://www.anthropic.com/engineering/building-effective-agents
 - OpenAI prompt engineering best practices: https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api
 - OpenAI API prompting guide: https://developers.openai.com/api/docs/guides/prompting
 - Anthropic multishot prompting: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting

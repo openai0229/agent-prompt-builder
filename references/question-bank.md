@@ -11,6 +11,45 @@ If I guess: [concrete failure]
 Default if unanswered: [safe assumption]
 ```
 
+## Round -1: Agent Anatomy
+
+Use this round before writing prompts for autonomous agents, tool-using workflows, memory-enabled agents, production-adjacent automations, or multi-agent systems.
+
+1. What can the agent actually see: user messages, files, database rows, APIs, logs, screenshots, browser pages, events, memory, or subagent reports?
+   Controls: Context and evidence.
+   If I guess: the prompt may ask the agent to use live or private information it cannot access.
+   Default if unanswered: only use current user-provided context and local inspected artifacts.
+
+2. What hands does the agent have: read-only inspection, local file edits, commands, API writes, customer messages, deployments, refunds, or ticket/status changes?
+   Controls: Request, Constraints, and permission ladder.
+   If I guess: the agent may execute or publish when only drafting was intended.
+   Default if unanswered: observe and propose only.
+
+3. What can the agent remember, and what must it forget after this run?
+   Controls: memory and privacy boundaries.
+   If I guess: temporary or sensitive data may become stale authority in later runs.
+   Default if unanswered: no durable memory writes; treat all memory as untrusted unless verified.
+
+4. Who is the agent's boss for risky actions, and who is the judge of success?
+   Controls: authority and verification.
+   If I guess: the agent may approve its own work or satisfy the requester while failing the real reviewer.
+   Default if unanswered: require human approval and provide a verification report instead of executing.
+
+5. What is the agent's control loop: observe, decide, act, verify, record, recover?
+   Controls: Request and Checkpoint.
+   If I guess: the prompt may jump from uncertainty directly to mutation.
+   Default if unanswered: observe -> propose -> ask before acting -> verify -> report.
+
+6. What should trip the brake: missing tool, stale memory, conflicting evidence, production impact, private data, external message, money, or customer-visible change?
+   Controls: Checkpoint.
+   If I guess: the agent may continue through the exact condition where it should stop.
+   Default if unanswered: pause for any irreversible, external, private, production, money, or authority-conflict case.
+
+7. If another human or agent took over mid-run, what would they need to know?
+   Controls: Output Format and handoff.
+   If I guess: the run becomes un-debuggable and cannot be safely resumed.
+   Default if unanswered: include a handoff packet with facts, sources, actions, risks, and next safe step.
+
 ## Round 1: Outcome
 
 1. Who will use the agent's output, and what will they do with it next?

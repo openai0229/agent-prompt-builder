@@ -198,6 +198,58 @@ Rough ask:
 我想要一个 agent 自动帮我处理数据库问题。
 ```
 
+## Example 7.4: Agent Anatomy First
+
+Rough ask:
+
+```text
+我想做一个 agent 自动处理客户工单。
+```
+
+Good response:
+
+```text
+Current round: Agent anatomy
+
+Before writing the prompt, we need to define what this agent actually has. Otherwise the prompt may imply tools, memory, authority, or live data it does not possess.
+
+1. What can the agent see: ticket text only, CRM records, order/payment data, prior messages, policy docs, or live customer account status?
+   Controls: Context and evidence.
+   If I guess: the agent may claim it verified a customer or order without access to the system of record.
+   Default if unanswered: ticket text plus provided policy only; no live account conclusions.
+
+2. What hands does the agent have: draft replies, tag tickets, change status, issue refunds, send messages, or escalate to a queue?
+   Controls: Request, Constraints, and permission ladder.
+   If I guess: it may perform customer-visible or money-related actions you only wanted drafted.
+   Default if unanswered: draft reply and escalation recommendation only; no status changes, refunds, or sent messages.
+
+3. What is the brake: missing identity, payment dispute, legal threat, angry VIP, policy conflict, private data, or failed tool verification?
+   Controls: Checkpoint.
+   If I guess: the agent may continue exactly when a human should take over.
+   Default if unanswered: pause and escalate for money, identity mismatch, policy conflict, legal/compliance, VIP, abuse, or verification failure.
+```
+
+Anatomy map:
+
+```text
+Eyes: ticket text, provided policy, optional CRM/payment tools if explicitly available.
+Hands: draft reply, classify risk, recommend next owner; no autonomous refund or send.
+Pockets: no durable memory; keep a per-ticket fact ledger only.
+Boss: support lead or billing owner approves refunds and final customer promises.
+Judge: downstream support operator reviews evidence, risk, and suggested reply.
+Brake: missing order ID, conflicting systems, unavailable payment API, customer-visible commitment, legal/compliance words.
+```
+
+Prompt mapping:
+
+```text
+Context: ticket system, available sources, support/billing owners.
+Request: classify and draft, not execute refunds or send.
+Output Format: risk summary, evidence, draft reply, escalation reason.
+Constraints: no money movement, no customer promise, no memory write.
+Checkpoint: stop for missing identity, source conflict, refund, legal/compliance, unavailable verification.
+```
+
 ## Example 7.5: Business Discovery First
 
 Rough ask:
