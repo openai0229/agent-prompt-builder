@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Prompt Builder"
+  short_description: "Build agent prompts as runtime contracts"
+  default_prompt: "Use $agent-prompt-builder to turn this rough agent behavior request into a robust Context, Request, Output Format, Constraints, and Checkpoint prompt."
