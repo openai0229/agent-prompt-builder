@@ -214,13 +214,13 @@ npm publish --access public
 
 The repository includes a Homebrew formula at `Formula/agent-prompt-builder-skill.rb`.
 
-For a proper public Homebrew tap, create a separate repository named:
+The public Homebrew tap is:
 
 ```text
 openai0229/homebrew-agent-prompt-builder
 ```
 
-Copy `Formula/agent-prompt-builder-skill.rb` into that tap repository, then users can install with:
+Users can install with:
 
 ```bash
 brew tap openai0229/agent-prompt-builder
@@ -246,5 +246,5 @@ agent-prompt-builder-skill --force --dest "${CODEX_HOME:-$HOME/.codex}/skills"
 
 - GitHub repository: already published at https://github.com/openai0229/agent-prompt-builder
 - npm package: run `npm login`, then `npm publish --access public`
-- Homebrew tap: create `openai0229/homebrew-agent-prompt-builder` and copy the formula there
+- Homebrew tap: already published at https://github.com/openai0229/homebrew-agent-prompt-builder
 - Skill directory: users can always install through `git clone`, `npx github:...`, or `$skill-installer`
