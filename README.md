@@ -127,12 +127,15 @@ The few-shot guidance was informed by current public prompting guidance and few-
 - Brown et al., "Language Models are Few-Shot Learners": https://arxiv.org/abs/2005.14165
 - Zhao et al., "Calibrate Before Use": https://arxiv.org/abs/2102.09690
 
-## Install
+## Install From GitHub
 
-Clone or copy this directory into:
+Fastest install:
 
-```text
-~/.codex/skills/agent-prompt-builder
+```bash
+mkdir -p "${CODEX_SKILLS_DIR:-$HOME/.agents/skills}"
+rm -rf "${CODEX_SKILLS_DIR:-$HOME/.agents/skills}/agent-prompt-builder"
+git clone https://github.com/openai0229/agent-prompt-builder.git \
+  "${CODEX_SKILLS_DIR:-$HOME/.agents/skills}/agent-prompt-builder"
 ```
 
 Then invoke it in Codex with:
@@ -140,3 +143,108 @@ Then invoke it in Codex with:
 ```text
 $agent-prompt-builder
 ```
+
+Update:
+
+```bash
+git -C "${CODEX_SKILLS_DIR:-$HOME/.agents/skills}/agent-prompt-builder" pull --ff-only
+```
+
+Uninstall:
+
+```bash
+rm -rf "${CODEX_SKILLS_DIR:-$HOME/.agents/skills}/agent-prompt-builder"
+```
+
+If your Codex installation still uses the legacy `$CODEX_HOME/skills` location, install there instead:
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+rm -rf "${CODEX_HOME:-$HOME/.codex}/skills/agent-prompt-builder"
+git clone https://github.com/openai0229/agent-prompt-builder.git \
+  "${CODEX_HOME:-$HOME/.codex}/skills/agent-prompt-builder"
+```
+
+## Install With Codex Skill Installer
+
+From inside Codex, ask:
+
+```text
+Use $skill-installer to install https://github.com/openai0229/agent-prompt-builder/tree/main
+```
+
+Or, if you have the built-in installer script available locally:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo openai0229/agent-prompt-builder \
+  --path . \
+  --name agent-prompt-builder
+```
+
+## Install With npx
+
+This repository is structured as an npm package, so it can be installed directly from GitHub:
+
+```bash
+npx github:openai0229/agent-prompt-builder --force
+```
+
+Install into the legacy `.codex` skills directory:
+
+```bash
+npx github:openai0229/agent-prompt-builder --force \
+  --dest "${CODEX_HOME:-$HOME/.codex}/skills"
+```
+
+After the package is published to npm, the shorter command will be:
+
+```bash
+npx agent-prompt-builder-skill --force
+```
+
+To publish the npm package:
+
+```bash
+npm login
+npm publish --access public
+```
+
+## Install With Homebrew
+
+The repository includes a Homebrew formula at `Formula/agent-prompt-builder-skill.rb`.
+
+For a proper public Homebrew tap, create a separate repository named:
+
+```text
+openai0229/homebrew-agent-prompt-builder
+```
+
+Copy `Formula/agent-prompt-builder-skill.rb` into that tap repository, then users can install with:
+
+```bash
+brew tap openai0229/agent-prompt-builder
+brew install --HEAD agent-prompt-builder-skill
+agent-prompt-builder-skill --force
+```
+
+Without a tap, users can still install from the raw formula URL:
+
+```bash
+brew install --HEAD \
+  https://raw.githubusercontent.com/openai0229/agent-prompt-builder/main/Formula/agent-prompt-builder-skill.rb
+agent-prompt-builder-skill --force
+```
+
+Install Homebrew-managed files into legacy `.codex` skills:
+
+```bash
+agent-prompt-builder-skill --force --dest "${CODEX_HOME:-$HOME/.codex}/skills"
+```
+
+## Public Distribution Checklist
+
+- GitHub repository: already published at https://github.com/openai0229/agent-prompt-builder
+- npm package: run `npm login`, then `npm publish --access public`
+- Homebrew tap: create `openai0229/homebrew-agent-prompt-builder` and copy the formula there
+- Skill directory: users can always install through `git clone`, `npx github:...`, or `$skill-installer`

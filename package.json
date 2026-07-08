@@ -1,0 +1,39 @@
+{
+  "name": "agent-prompt-builder-skill",
+  "version": "0.1.0",
+  "description": "Install the agent-prompt-builder Codex skill.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "agent-prompt-builder-skill": "bin/install.mjs"
+  },
+  "scripts": {
+    "install-skill": "node bin/install.mjs",
+    "check": "node bin/install.mjs --dry-run"
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "agents",
+    "references",
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openai0229/agent-prompt-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openai0229/agent-prompt-builder/issues"
+  },
+  "homepage": "https://github.com/openai0229/agent-prompt-builder#readme",
+  "keywords": [
+    "codex",
+    "skill",
+    "agent",
+    "prompt",
+    "few-shot"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
